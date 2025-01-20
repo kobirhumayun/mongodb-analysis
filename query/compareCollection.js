@@ -70,6 +70,8 @@ const compareCollections = async () => {
 
   } catch (error) {
     console.error('Error in compareCollections', error);
+  } finally {
+    process.exit(0);
   }
 };
 
