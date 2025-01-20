@@ -10,7 +10,7 @@ const connectDB = async (dbName) => {
 
   try {
 
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = new MongoClient(uri);
     const connection = await client.connect();
     dbConnection = connection.db(dbName);
     console.log('Database connected');
