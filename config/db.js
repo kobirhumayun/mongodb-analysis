@@ -5,14 +5,14 @@ const uri = process.env.MONGODB_URI; // Use the URI from the .env file
 
 let dbConnection = null;
 
-const connectDB = async () => {
+const connectDB = async (dbName) => {
   if (dbConnection) return dbConnection;
 
   try {
 
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     const connection = await client.connect();
-    dbConnection = connection.db('yourDatabaseName');
+    dbConnection = connection.db(dbName);
     console.log('Database connected');
     return dbConnection;
   } catch (error) {
