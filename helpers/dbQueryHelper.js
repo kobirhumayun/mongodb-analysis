@@ -2,13 +2,14 @@ const { connectDB } = require('../config/db');
 
 /**
  * Run aggregation pipeline on a collection
+ * @param {string} dbName
  * @param {string} collectionName
  * @param {Array} pipeline
  * @returns {Promise<Object>}
  */
-const runAggregation = async (collectionName, pipeline) => {
+const runAggregation = async (dbName, collectionName, pipeline) => {
   try {
-    const db = await connectDB();
+    const db = await connectDB(dbName);
     const collection = db.collection(collectionName);
     const result = await collection.aggregate(pipeline).toArray();
     return result;
