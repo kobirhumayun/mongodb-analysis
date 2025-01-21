@@ -9,7 +9,7 @@ const path = require('path');
  * @returns {Promise<void>} A Promise that resolves when the file is saved successfully, or rejects if an error occurs.
  * @throws {TypeError} If dataArray is not an array or filePath is not a string.
  */
-async function saveArrayToJsonFile(dataArray, filePath) {
+async function saveArrayOfObjToJsonFile(dataArray, filePath) {
     if (!Array.isArray(dataArray)) {
         throw new TypeError('dataArray must be an array.');
     }
@@ -47,10 +47,10 @@ async function exampleUsage() {
 
         const outputFilePath = path.join(__dirname, '..', '..', 'data', 'output.json'); // Use path.join for cross-platform compatibility
 
-        await saveArrayToJsonFile(sampleData, outputFilePath);
+        await saveArrayOfObjToJsonFile(sampleData, outputFilePath);
 
         // Example with invalid input:
-        // await saveArrayToJsonFile("not an array", outputFilePath); // This will throw a TypeError
+        // await saveArrayOfObjToJsonFile("not an array", outputFilePath); // This will throw a TypeError
 
         const sampleData2 = [
             { id: "6557816a188f6c3116514781", name: 'Item 1', value: 10 },
@@ -58,7 +58,7 @@ async function exampleUsage() {
             { id: "6557816a188f6c3116514783", name: 'Item 3', value: 30 }
         ];
         const outputFilePath2 = path.join(__dirname, '..', '..', 'data', 'output2.json');
-        await saveArrayToJsonFile(sampleData2, outputFilePath2);
+        await saveArrayOfObjToJsonFile(sampleData2, outputFilePath2);
 
     } catch (error) {
         console.error("Example usage error:", error);
@@ -68,4 +68,4 @@ async function exampleUsage() {
 // exampleUsage();
 
 
-module.exports = { saveArrayToJsonFile }; // Make the function available for other modules
+module.exports = { saveArrayOfObjToJsonFile }; // Make the function available for other modules
