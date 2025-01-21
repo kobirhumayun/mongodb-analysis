@@ -1,3 +1,31 @@
+function compareData(collection1Data, collection2Data, groupField, collection1Name, collection2Name, idField, valueField) {
+    // Convert results to dictionaries for easy lookup
+    const results1Dict = Object.fromEntries(collection1Data.map(item => [item[idField], item[valueField]]));
+    const results2Dict = Object.fromEntries(collection2Data.map(item => [item[idField], item[valueField]]));
+
+    // Compare the results
+    const comparison = [];
+
+    const allKeys = new Set([...Object.keys(results1Dict), ...Object.keys(results2Dict)]);
+
+    allKeys.forEach(key => {
+        const value1 = results1Dict[key] || 0;
+        const value2 = results2Dict[key] || 0;
+        const difference = value1 - value2;
+
+        if (difference !== 0) {
+            comparison.push({
+                [groupField]: key,
+                [`${collection1Name}_value`]: value1,
+                [`${collection2Name}_value`]: value2,
+                difference: difference
+            });
+        }
+    });
+
+    return comparison;
+}
+
 function filterObjectsByPathValue(objects, paths, comparisonValue, comparisonType = "equal") {
     if (!Array.isArray(objects)) {
         throw new Error("Objects must be an array.");
@@ -85,4 +113,4 @@ function compareValues(value1, value2, comparisonType) {
 // const pathsNonExistentLessThan = ["non.existent.path"];
 // console.log("Non-existent path less than comparison:", filterObjectsByPathValue(data, pathsNonExistentLessThan, 10, "lessThan"));
 
-module.exports = { filterObjectsByPathValue};
+module.exports = { compareData, filterObjectsByPathValue };
