@@ -1,4 +1,6 @@
 const { runAggregation, findDocuments } = require('../helpers/dbQueryHelper');
+const { connectDB, closeDB } = require('../config/db');
+
 
 const compareCollections = async () => {
   try {
@@ -71,6 +73,8 @@ const compareCollections = async () => {
   } catch (error) {
     console.error('Error in compareCollections', error);
   } finally {
+    // Close the database connection
+    await closeDB();
     process.exit(0);
   }
 };
