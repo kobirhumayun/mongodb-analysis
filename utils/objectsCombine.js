@@ -1,3 +1,5 @@
+const lodash = require('lodash');
+
 /**
  * Unions two arrays of MongoDB objects into a single array.
  *
@@ -22,4 +24,44 @@ function unionArraysOfObjects(array1, array2) {
     return unionedArray;
 }
 
-module.exports = { unionArraysOfObjects };
+
+/**
+ * Creates a unique array of objects based on a specified object path.
+ *
+ * @param {Array<Object>} objects The array of objects to process.
+ * @param {string} objectPath The path to the property to use for uniqueness (e.g., 'id', 'user.name', '_id').
+ * @returns {Array<Object>} A new array containing only unique objects. Returns empty array if input is not valid.
+ * @throws {TypeError} If objects is not an array or objectPath is not a string.
+ */
+function uniqueObjectsByPath(objects, objectPath) {
+    if (!Array.isArray(objects)) {
+        console.error("objects must be an array.");
+        return []; // or throw new TypeError('objects must be an array.'); if you prefer throwing error.
+    }
+
+    if (typeof objectPath !== 'string') {
+        console.error("objectPath must be a string.");
+        return []; // or throw new TypeError('objectPath must be a string.');
+    }
+
+    const uniqueValues = new Set();
+    const uniqueObjects = [];
+
+    for (const obj of objects) {
+        // Use lodash.get for robust path traversal (handles nested paths and undefined values):
+        const value = lodash.get(obj, objectPath);
+
+        if (value !== undefined && !uniqueValues.has(value)) {
+            uniqueValues.add(value);
+            uniqueObjects.push(obj);
+        }
+    }
+
+    return uniqueObjects;
+}
+
+// // Example call:
+// const uniqueById = uniqueObjectsByPath(objects, 'id');
+// const uniqueByUserName = uniqueObjectsByPath(objects, 'user.name');
+
+module.exports = { unionArraysOfObjects, uniqueObjectsByPath };
