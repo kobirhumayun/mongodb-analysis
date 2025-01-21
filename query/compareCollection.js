@@ -1,6 +1,8 @@
 const { runAggregation, findDocuments } = require('../helpers/dbQueryHelper');
 const { connectDB, closeDB } = require('../config/db');
 const { compareData, filterObjectsByPathValue } = require('../utils/objectsComparision');
+const { saveArrayOfObjToJsonFile } = require('../utils/fs')
+const path = require('path');
 
 const compareCollections = async () => {
   try {
@@ -45,6 +47,9 @@ const compareCollections = async () => {
     comparison.forEach(item => {
       console.log(JSON.stringify(item, null, 2));
     });
+
+    const outputFilePath = path.join(__dirname, '..', '..', 'data', 'comparison.json');
+    await saveArrayOfObjToJsonFile(comparison, outputFilePath);
     // Implement your comparison logic here...
 
   } catch (error) {
