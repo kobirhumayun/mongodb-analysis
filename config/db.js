@@ -21,4 +21,17 @@ const connectDB = async (dbName) => {
   }
 };
 
-module.exports = { connectDB };
+const closeDB = async () => {
+  if (!dbConnection) return;
+
+  try {
+    await dbConnection.client.close();
+    dbConnection = null;
+    console.log('Database connection closed');
+  } catch (error) {
+    console.error('Error closing the database connection', error);
+    throw error;
+  }
+};
+
+module.exports = { connectDB, closeDB };
