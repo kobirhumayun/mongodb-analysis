@@ -37,8 +37,8 @@ const compareCollections = async () => {
     ];
 
     // Get data for both collections
-    const collection1Data = await runAggregation(dbName, 'data_1', pipeline1);
-    const collection2Data = await runAggregation(dbName, 'data_2', pipeline2);
+    const collection1Data = await runAggregation(dbName, collection1Name, pipeline1);
+    const collection2Data = await runAggregation(dbName, collection2Name, pipeline2);
 
     const comparison = compareData(collection1Data, collection2Data, collection1GroupField, collection1Name, collection2Name, "_id", "totalValue");
 
