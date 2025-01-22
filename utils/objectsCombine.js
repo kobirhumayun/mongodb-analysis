@@ -126,4 +126,56 @@ function commonObjectsByPath(array1, array2, objectPath, isObjTakeFromFirstArr =
 // console.log("Common by user.name:", commonByUserName);
 
 
-module.exports = { unionArraysOfObjects, uniqueObjectsByPath, commonObjectsByPath };
+/**
+ * Creates a common array of objects based on a specified object path from two input arrays.
+ *
+ * @param {Array<Object>} array1 The first array of objects.
+ * @param {Array<Object>} array2 The second array of objects.
+ * @param {string} objectPath The path to the property to use for comparison (e.g., 'id', 'user.name', '_id').
+ * @returns {Array<Object>} A new array containing only the objects that exist in both input arrays based on the object path. Returns empty array if input is not valid.
+ * @throws {TypeError} If array1 or array2 is not an array or objectPath is not a string.
+ */
+function excludeIntersectionByPath(array1, array2, objectPath, isObjExcludeFromFirstArr = true) {
+    if (!Array.isArray(array1) || !Array.isArray(array2) || typeof objectPath !== 'string') {
+        console.error("Invalid input: array1 and array2 must be arrays, and objectPath must be a string.");
+        return [];
+    }
+
+    // Create a set of unique values based on the object path from the second array:
+    const uniqueValuesInExcludingArray = new Set();
+    const excludedObjects = [];
+
+    const objFromArr = isObjExcludeFromFirstArr ? array1 : array2;
+    const objExcludeFromArr = isObjExcludeFromFirstArr ? array2 : array1;
+
+    for (const obj of objExcludeFromArr) {
+        // Use lodash.get for robust path traversal (handles nested paths and undefined values):
+        const value = lodash.get(obj, objectPath);
+
+        if (value !== undefined && !uniqueValuesInExcludingArray.has(value)) {
+            uniqueValuesInExcludingArray.add(value);
+        }
+    }
+
+    for (const obj of objFromArr) {
+        // Use lodash.get for robust path traversal (handles nested paths and undefined values):
+        const value = lodash.get(obj, objectPath);
+
+        if (value !== undefined && !uniqueValuesInExcludingArray.has(value)) {
+            excludedObjects.push(obj);
+        }
+    }
+
+    return excludedObjects;
+}
+
+
+// // // Example call:
+// const commonById = excludeIntersectionByPath(arrOfObj1, arrOfObj2, 'id', false);
+// console.log("Common by id:", commonById);
+
+// const commonByUserName = excludeIntersectionByPath(arrOfObj1, arrOfObj2, 'user.name');
+// console.log("Common by user.name:", commonByUserName);
+
+
+module.exports = { unionArraysOfObjects, uniqueObjectsByPath, commonObjectsByPath, excludeIntersectionByPath };
