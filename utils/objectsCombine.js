@@ -74,7 +74,7 @@ function uniqueObjectsByPath(objects, objectPath) {
  * @returns {Array<Object>} A new array containing only the objects that exist in both input arrays based on the object path. Returns empty array if input is not valid.
  * @throws {TypeError} If array1 or array2 is not an array or objectPath is not a string.
  */
-function commonObjectsByPath(array1, array2, objectPath) {
+function commonObjectsByPath(array1, array2, objectPath, isObjTakeFromFirstArr = true) {
     if (!Array.isArray(array1) || !Array.isArray(array2) || typeof objectPath !== 'string') {
         console.error("Invalid input: array1 and array2 must be arrays, and objectPath must be a string.");
         return [];
@@ -103,7 +103,9 @@ function commonObjectsByPath(array1, array2, objectPath) {
         }
     }
 
-    for (const obj of array2) {
+    const objFromArr = isObjTakeFromFirstArr ? array1 : array2;
+
+    for (const obj of objFromArr) {
         // Use lodash.get for robust path traversal (handles nested paths and undefined values):
         const value = lodash.get(obj, objectPath);
 
@@ -117,7 +119,7 @@ function commonObjectsByPath(array1, array2, objectPath) {
 }
 
 // // Example call:
-// const commonById = commonObjectsByPath(arrOfObj1, arrOfObj2, 'id');
+// const commonById = commonObjectsByPath(arrOfObj1, arrOfObj2, 'id', false);
 // console.log("Common by id:", commonById);
 
 // const commonByUserName = commonObjectsByPath(arrOfObj1, arrOfObj2, 'user.name');
