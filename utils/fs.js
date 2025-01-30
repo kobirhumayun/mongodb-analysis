@@ -35,6 +35,12 @@ async function saveArrayOfObjToJsonFile(dataArray, filePath) {
     }
 }
 
+// Read JSON file asynchronously
+async function readJsonFileAsync(filePath) {
+    const rawData = await fs.promises.readFile(filePath, 'utf8');
+    return JSON.parse(rawData);
+}
+
 
 // Example usage (you would typically get data from MongoDB):
 async function exampleUsage() {
@@ -67,5 +73,16 @@ async function exampleUsage() {
 
 // exampleUsage();
 
+// Using async/await
+async function main() {
+    try {
+        const config = await readJsonFileAsync("C:/Users/Humayun/Downloads/arafah_processing.json");
+        console.log(config);
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
 
-module.exports = { saveArrayOfObjToJsonFile }; // Make the function available for other modules
+// main();
+
+module.exports = { saveArrayOfObjToJsonFile, readJsonFileAsync }; // Make the function available for other modules
