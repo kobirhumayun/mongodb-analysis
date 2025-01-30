@@ -1,4 +1,5 @@
-﻿function findClosestCombination(items, target) {
+﻿function findClosestCombination(items, target, valueKey) {
+    // function returns the closest sum of the items to the target value
     const dp = new Map(); // Key: sum, Value: { sum: number, elements: array }
     dp.set(0, { sum: 0, elements: [] });
 
@@ -7,7 +8,7 @@
     let closestElements = [];
 
     for (const item of items) {
-        const currentValue = item.value;
+        const currentValue = item[valueKey];
         const temp = new Map();
 
         for (const [sum, data] of dp) {
@@ -59,7 +60,7 @@
         closestElements = [items[0]];
         closestDiff = Math.abs(target - closestSum);
         for (const item of items) {
-            if (item.value !== 0) {
+            if (item[valueKey] !== 0) {
                 closestElements = [item];
                 break;
             }
@@ -75,15 +76,15 @@
 
 // // Example usage:
 // const items = [
-//     { value: 50000 },
-//     { value: 50000 },
-//     { value: 30000 }
+//     { InvoiceValue: 50000 },
+//     { InvoiceValue: 50000 },
+//     { InvoiceValue: 30000 }
 // ];
 // const target = 100000;
 
-// const result = findClosestCombination(items, target);
+// const result = findClosestCombination(items, target, "InvoiceValue");
 // console.log(`Closest sum: ${result.sum}`);
-// console.log(`Combination:`, result.combination.map(item => item.value));
+// console.log(`Combination:`, result.combination.map(item => item.InvoiceValue));
 // console.log(`Difference: ${result.difference}`);
 
 module.exports = { findClosestCombination }; // Make the function available for other modules
