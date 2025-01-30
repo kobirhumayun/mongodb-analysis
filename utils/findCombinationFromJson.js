@@ -1,5 +1,5 @@
 ﻿const fs = require('fs');
-const { findClosestCombination } = require('./ClosestCombination');
+const { findClosestCombination } = require('./closestCombination');
 
 // Read JSON file asynchronously
 const readFile = async (filePath) => {
